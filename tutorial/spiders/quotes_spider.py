@@ -1,4 +1,5 @@
 import scrapy
+import datetime
 
 class QuotesSpiderSpider(scrapy.Spider):
     name = "quotes_spider"
@@ -11,9 +12,12 @@ class QuotesSpiderSpider(scrapy.Spider):
         # Extract quotes
         for quote in quotes:
             yield {
-                "text": quote.xpath(".//span[@class='text']/text()").get(),
-                "author": quote.xpath(".//small[@class='author']/text()").get(),
-                "tags": quote.xpath(".//div[@class='tags']/a[@class='tag']/text()").getall(),
+                "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "data": {
+                    "text": quote.xpath(".//span[@class='text']/text()").get(),
+                    "author": quote.xpath(".//small[@class='author']/text()").get(),
+                    "tags": quote.xpath(".//div[@class='tags']/a[@class='tag']/text()").getall(),
+                }
             }
 
         # Navigate to next page
